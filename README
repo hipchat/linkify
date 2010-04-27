@@ -4,30 +4,33 @@ To make use of the library, get the source code from the git repository here: ht
 Take the code approrpriate to the language you're coding in as described below.
 
 ACTIONSCRIPT
+============
 
 You may either:
-  1) Copy the swc into a local folder (e.g. the /libs directory in a Flex project) and change the project properties to include linkify.swc in the build process
-  2) Include the source code directly.  If you include the source directly, you must make sure to include the folder structure as well (e.g. you may have a folder <project_name>/libs/com/hipchat/Link.as)
+
+1. Copy the swc into a local folder (e.g. the /libs directory in a Flex project) and change the project properties to include linkify.swc in the build process
+2. Include the source code directly.  If you include the source directly, you must make sure to include the folder structure as well (e.g. you may have a folder <project_name>/libs/com/hipchat/Link.as)
 
 Once you have added the code/swc to your project, import the library and access it through the link package:
 
-<mx:Script>
-  <![CDATA[
-    import com.hipchat.Link;
-   
-    ...
-    var linkified_text:String = Link.linkify(unlinkified_text, ...);
-    ...
-  ]]>
-</mx:Script>
+    <mx:Script>
+      <![CDATA[
+        import com.hipchat.Link;
+      
+        ...
+        var linkified_text:String = Link.linkify(unlinkified_text, ...);
+        ...
+      ]]>
+    </mx:Script>
 
 Please note, if you wish to include the emoticonify functionality, you will need to edit the source code to link emoticons to the correct place.  See the emoticonText function in Link.as.
 
 
 JAVASCRIPT
+==========
 
 Copy the link.js file to your own repository/web server.  Include link.js on your page.  The linkification function can be accessed throught he global link object:
 
-<script>
-  var linkified_text = link.linkify(unlinkified_text, ...);
-</script>
+    <script>
+      var linkified_text = link.linkify(unlinkified_text, ...);
+    </script>
