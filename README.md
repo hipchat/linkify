@@ -1,10 +1,15 @@
+Linkify
+=======
+
 To make use of the library, get the source code from the git repository here: http://github.com/hipchat/linkify/archives/master or check out the repository using:
-  %> git clone git@github.com:hipchat/linkify.git
+
+    %> git clone git@github.com:hipchat/linkify.git
 
 Take the code approrpriate to the language you're coding in as described below.
 
-ACTIONSCRIPT
-============
+
+ActionScript
+------------
 
 You may either:
 
@@ -26,8 +31,8 @@ Once you have added the code/swc to your project, import the library and access 
 Please note, if you wish to include the emoticonify functionality, you will need to edit the source code to link emoticons to the correct place.  See the emoticonText function in Linkify.as.
 
 
-JAVASCRIPT
-==========
+JavaScript
+----------
 
 Copy the linkify.js file to your own repository/web server.  Include linkify.js on your page.  The linkification function can be accessed throught he global linkify object:
 
