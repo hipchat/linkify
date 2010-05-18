@@ -135,7 +135,7 @@ link = {
         replacement += 'mailto:';
       }
 
-      replacement += actual+'"';
+      replacement += actual.replace(/"/g, '%22')+'"';
       replacement += ' title="';
       
       if (is_url) replacement += actual;

@@ -119,7 +119,7 @@ package com.hipchat {
 					replacement += 'mailto:';
 				}
 	
-				replacement += actual+'"';
+				replacement += actual.replace(new RegExp('"', 'g'), '%22')+'"';
 				
 				if (truncateLength && address.length > truncateLength) {
         			address = address.substr(0, truncateLength) + '...';
