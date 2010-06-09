@@ -2,7 +2,7 @@ linkify = {
   // Static values used in creating the URL regexes
   RE_EMAIL_PATTERN: '\\b[\\w.-]+\\+*[\\w.-]+@(?:(?:[\\w-]+\\.)+[A-Za-z]{2,6}|(?:\\d{1,3}\\.){3}\\d{1,3})',
   RE_TLD: '(?:aero|arpa|biz|com|coop|edu|gov|info|int|mil|museum|name|net|org|travel|ac|ad|ae|af|ag|ai|al|am|an|ao|aq|ar|as|at|au|aw|az|ba|bb|bd|be|bf|bg|bh|bi|bj|bm|bn|bo|br|bs|bt|bv|bw|by|bz|ca|cc|cd|cf|cg|ch|ci|ck|cl|cm|cn|co|cr|cu|cv|cx|cy|cz|de|dj|dk|dm|do|dz|ec|ee|eg|eh|er|es|et|fi|fj|fk|fm|fo|fr|ga|gd|ge|gf|gg|gh|gi|gl|gm|gn|gp|gq|gr|gs|gt|gu|gw|gy|hk|hm|hn|hr|ht|hu|id|ie|il|im|in|io|iq|ir|is|it|je|jm|jo|jp|ke|kg|kh|ki|km|kn|kp|kr|kw|ky|kz|la|lb|lc|li|lk|lr|ls|lt|lu|lv|ly|ma|mc|md|mg|mh|mk|ml|mm|mn|mo|mp|mq|mr|ms|mt|mu|mv|mw|mx|my|mz|na|nc|ne|nf|ng|ni|nl|no|np|nr|nu|nz|om|pa|pe|pf|pg|ph|pk|pl|pm|pn|pr|ps|pt|pw|py|qa|re|ro|ru|rw|sa|sb|sc|sd|se|sg|sh|si|sj|sk|sl|sm|sn|so|sr|st|sv|sy|sz|tc|td|tf|tg|th|tj|tk|tm|tn|to|tp|tr|tt|tv|tw|tz|ua|ug|uk|um|us|uy|uz|va|vc|ve|vg|vi|vn|vu|wf|ws|ye|yt|yu|za|zm|zw)',
-  RE_URL_MIDCHAR: '[\\w\\.,@?^=%*"&,:;/~\+#\'|-]',  // characters allowed in URL center
+  RE_URL_MIDCHAR: '[\\w\\.,@?^=()%*"&,:;/~\+#\'|-]',  // characters allowed in URL center
   RE_URL_ENDCHAR: '[\\w@?^=%&/~\+#-]',              // URL must end with one of these chars
   RE_URL_SCHEME: '(?:http|ftp|https|news|mms)://',  // protocol
     
@@ -24,7 +24,7 @@ linkify = {
   // Intialize the linkification variables
   // Call this before calling linkify(...)
   init: function() {
-    this.RE_URL_ENDING = '(?:'+this.RE_URL_MIDCHAR+'*(?:\\('+this.RE_URL_MIDCHAR+'*\\)'+this.RE_URL_ENDCHAR+'*|'+this.RE_URL_ENDCHAR+'))?';
+    this.RE_URL_ENDING = '(?:'+this.RE_URL_MIDCHAR+'*'+this.RE_URL_ENDCHAR+')?';
     this.RE_FULL_URL = this.RE_URL_SCHEME+'\\w+(?:.\\w+)'+this.RE_URL_ENDING;
     this.RE_OTHER_URL = '\\w[\\w_-]*(?:\\.\\w[\\w_-]*)*\\.'+this.RE_TLD+'(?:\\/'+this.RE_URL_ENDING+')?\\b';
   },
