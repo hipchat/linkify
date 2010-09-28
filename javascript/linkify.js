@@ -135,6 +135,7 @@ linkify = {
         replacement += 'mailto:';
       }
 
+      actual = actual.replace(/"/g, '%22');
       replacement += actual+'"';
       replacement += ' title="';
       
