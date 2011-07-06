@@ -11,7 +11,7 @@ package com.hipchat {
 		// If we have the scheme/protocol, always linkify (don't require a valid TLD)
 		public static const RE_FULL_URL:String = RE_URL_SCHEME+'\\w+(?:.\\w+)'+RE_URL_ENDING;
 		// URLs not starting with a protocol (e.g. www.google.com instead of http://www.google.com)
-		public static const RE_OTHER_URL:String = '\\w[\\w_-]*(?:\\.\\w[\\w_-]*)*\\.'+RE_TLD+'(?:\\/'+RE_URL_ENDING+')?\\b';
+		public static const RE_OTHER_URL:String = '\\w[\\w_-]*(?:\\.\\w[\\w_-]*)*\\.'+RE_TLD+'(?:\\/'+RE_URL_ENDING+')?';
 
 		// Text to turn in to emoticon images
 		// emoticons.regex is a pattern to be used in the RegExp constructor
