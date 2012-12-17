@@ -13,11 +13,11 @@
   </body>
   <script type="text/javascript" charset="utf-8">
 
-    function test_group(name, links) {
+    function test_group(name, links, truncate_length) {
       test(name, function() {
         for (var text in links) {
           var expected = links[text];
-          var actual = linkify.linkify(text);
+          var actual = linkify.linkify(text, truncate_length);
           equal(actual, expected, text);
         }
       });
@@ -43,6 +43,13 @@
       'http://www.example.com/some_(parens)': '<a target="_blank" href="http://www.example.com/some_(parens)" title="http://www.example.com/some_(parens)">http:<wbr>/<wbr>/www.example.com<wbr>/some_(parens)</a>',
       '(http://www.example.com/some_(parens))': '(<a target="_blank" href="http://www.example.com/some_(parens)" title="http://www.example.com/some_(parens)">http:<wbr>/<wbr>/www.example.com<wbr>/some_(parens)</a>)',
     });
+
+    // truncate length
+    test_group("truncated", {
+      'user@blah.example.com': '<a target="_blank" href="mailto:user@blah.example.com" title="Email user@blah.example.com">user@blah.examp...</a>',
+      'blah.foo.example.com': '<a target="_blank" href="http://blah.foo.example.com" title="http://blah.foo.example.com">blah.foo.exampl...</a>',
+      'http://www.example.com': '<a target="_blank" href="http://www.example.com" title="http://www.example.com">http:<wbr>/<wbr>/www.exam...</a>',
+    }, 15);
 
     // test that matched items are returned
     test("returns matched items", function() {

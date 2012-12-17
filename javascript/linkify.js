@@ -19,6 +19,7 @@ linkify = {
    * Note: init must be called before this function can be used
    *
    * @param text - String to be linkified
+   * @param truncate_length - Truncate displayed links to this length
    * @param matched_links - Return param (pass by ref) - Array of links matched during linkification
    **/
   linkify: function(text, truncate_length, matched_links) {
