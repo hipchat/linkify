@@ -7,8 +7,11 @@ linkify = {
   RE_URL_SCHEME: '(?:http|ftp|https|news|mms)://',  // protocol
 
   // Intialize the linkification variables
-  // Call this before calling linkify(...)
   init: function() {
+    // already initialized?
+    if (this.RE_URL_ENDING) {
+      return;
+    }
     this.RE_URL_ENDING = '(?:'+this.RE_URL_MIDCHAR+'*'+this.RE_URL_ENDCHAR+')?';
     this.RE_FULL_URL = this.RE_URL_SCHEME+'\\w+(?:.\\w+)'+this.RE_URL_ENDING;
     this.RE_OTHER_URL = '\\w[\\w_-]*(?:\\.\\w[\\w_-]*)*\\.'+this.RE_TLD+'(?:\\/'+this.RE_URL_ENDING+')?\\b';
@@ -23,6 +26,8 @@ linkify = {
    * @param matched_links - Return param (pass by ref) - Array of links matched during linkification
    **/
   linkify: function(text, truncate_length, matched_links) {
+    this.init();
+
     text = this.match_and_replace(this.RE_EMAIL_PATTERN, text, false, false, truncate_length, matched_links);
     text = this.match_and_replace(this.RE_FULL_URL, text, true, false, truncate_length, matched_links);
     text = this.match_and_replace(this.RE_OTHER_URL, text, true, true, truncate_length, matched_links);
