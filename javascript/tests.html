@@ -44,5 +44,14 @@
       '(http://www.example.com/some_(parens))': '(<a target="_blank" href="http://www.example.com/some_(parens)" title="http://www.example.com/some_(parens)">http:<wbr>/<wbr>/www.example.com<wbr>/some_(parens)</a>)',
     });
 
+    // test that matched items are returned
+    test("returns matched items", function() {
+      var items = ['email@example.com', 'http://example.com/blah'];
+      var text = items.join(', ');
+      var matched = [];
+      linkify.linkify(text, null, matched);
+      deepEqual(matched, items);
+    });
+
   </script>
 </html>

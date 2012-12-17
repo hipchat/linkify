@@ -22,10 +22,6 @@ linkify = {
    * @param matched_links - Return param (pass by ref) - Array of links matched during linkification
    **/
   linkify: function(text, truncate_length, matched_links) {
-    if (typeof matched_links == 'undefined') {
-      match_and_replace = [];
-    }
-
     text = this.match_and_replace(this.RE_EMAIL_PATTERN, text, false, false, truncate_length, matched_links);
     text = this.match_and_replace(this.RE_FULL_URL, text, true, false, truncate_length, matched_links);
     text = this.match_and_replace(this.RE_OTHER_URL, text, true, true, truncate_length, matched_links);
