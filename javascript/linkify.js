@@ -6,6 +6,8 @@ linkify = {
   RE_URL_ENDCHAR: '[\\w@?^=%&/~\+#-]',              // URL must end with one of these chars
   RE_URL_SCHEME: '(?:http|ftp|https|news|mms)://',  // protocol
 
+  add_wbrs: true,
+
   // Intialize the linkification variables
   init: function() {
     // already initialized?
@@ -108,11 +110,18 @@ linkify = {
       }
 
       // Add word break tags to allow wrapping where appropriate
-      replacement += '>'+address.replace(new RegExp("([/=])", 'g'), "<wbr>$1")+'</a>';
+      if (this.add_wbrs) {
+        address = address.replace(new RegExp("([/=])", 'g'), "<wbr>$1");
+      }
+
+      replacement += '>'+address+'</a>';
+
+      // Record what was matched
       if (matched_links) {
         matched_links.push(actual);
       }
 
+      // Do the replacement
       input = input.slice(0, start) + replacement + input.slice(start+match_length, input.length);
       re.lastIndex = start + replacement.length;
       offset = start + replacement.length;

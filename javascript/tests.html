@@ -13,6 +13,8 @@
   </body>
   <script type="text/javascript" charset="utf-8">
 
+    linkify.add_wbrs = false;
+
     function test_group(name, links, truncate_length) {
       test(name, function() {
         for (var text in links) {
@@ -30,29 +32,29 @@
 
     // full URLs
     test_group("full urls", {
-      'http://www.example.com': '<a target="_blank" href="http://www.example.com" title="http://www.example.com">http:<wbr>/<wbr>/www.example.com</a>',
-      'http://www.example.com/blah': '<a target="_blank" href="http://www.example.com/blah" title="http://www.example.com/blah">http:<wbr>/<wbr>/www.example.com<wbr>/blah</a>',
+      'http://www.example.com': '<a target="_blank" href="http://www.example.com" title="http://www.example.com">http://www.example.com</a>',
+      'http://www.example.com/blah': '<a target="_blank" href="http://www.example.com/blah" title="http://www.example.com/blah">http://www.example.com/blah</a>',
     });
 
     // partial URLs
     test_group("partial urls", {
       'example.com': '<a target="_blank" href="http://example.com" title="http://example.com">example.com</a>',
       'www.example.com': '<a target="_blank" href="http://www.example.com" title="http://www.example.com">www.example.com</a>',
-      'example.com/foo': '<a target="_blank" href="http://example.com/foo" title="http://example.com/foo">example.com<wbr>/foo</a>',
+      'example.com/foo': '<a target="_blank" href="http://example.com/foo" title="http://example.com/foo">example.com/foo</a>',
     });
 
     // parentheses
     test_group("parentheses", {
-      'http://www.example.com/some_(parens)_thing': '<a target="_blank" href="http://www.example.com/some_(parens)_thing" title="http://www.example.com/some_(parens)_thing">http:<wbr>/<wbr>/www.example.com<wbr>/some_(parens)_thing</a>',
-      'http://www.example.com/some_(parens)': '<a target="_blank" href="http://www.example.com/some_(parens)" title="http://www.example.com/some_(parens)">http:<wbr>/<wbr>/www.example.com<wbr>/some_(parens)</a>',
-      '(http://www.example.com/some_(parens))': '(<a target="_blank" href="http://www.example.com/some_(parens)" title="http://www.example.com/some_(parens)">http:<wbr>/<wbr>/www.example.com<wbr>/some_(parens)</a>)',
+      'http://www.example.com/some_(parens)_thing': '<a target="_blank" href="http://www.example.com/some_(parens)_thing" title="http://www.example.com/some_(parens)_thing">http://www.example.com/some_(parens)_thing</a>',
+      'http://www.example.com/some_(parens)': '<a target="_blank" href="http://www.example.com/some_(parens)" title="http://www.example.com/some_(parens)">http://www.example.com/some_(parens)</a>',
+      '(http://www.example.com/some_(parens))': '(<a target="_blank" href="http://www.example.com/some_(parens)" title="http://www.example.com/some_(parens)">http://www.example.com/some_(parens)</a>)',
     });
 
     // truncate length
     test_group("truncated", {
       'user@blah.example.com': '<a target="_blank" href="mailto:user@blah.example.com" title="Email user@blah.example.com">user@blah.examp...</a>',
       'blah.foo.example.com': '<a target="_blank" href="http://blah.foo.example.com" title="http://blah.foo.example.com">blah.foo.exampl...</a>',
-      'http://www.example.com': '<a target="_blank" href="http://www.example.com" title="http://www.example.com">http:<wbr>/<wbr>/www.exam...</a>',
+      'http://www.example.com': '<a target="_blank" href="http://www.example.com" title="http://www.example.com">http://www.exam...</a>',
     }, 15);
 
     // test that matched items are returned
@@ -62,6 +64,16 @@
       var matched = [];
       linkify.linkify(text, null, matched);
       deepEqual(matched, items);
+    });
+
+    // test add_wbrs
+    test("add <wbr>", function() {
+      linkify.add_wbrs = true;
+      var text = 'example.com/foo?a=b';
+      var expected = '<a target="_blank" href="http://example.com/foo?a=b" title="http://example.com/foo?a=b">example.com<wbr>/foo?a<wbr>=b</a>';
+      var actual = linkify.linkify(text);
+      equal(actual, expected, text);
+      linkify.add_wbrs = false;
     });
 
   </script>
