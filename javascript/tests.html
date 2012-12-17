@@ -15,12 +15,10 @@
 
     linkify.add_wbrs = false;
 
-    function test_group(name, links, truncate_length) {
+    function test_group(name, links) {
       test(name, function() {
         for (var text in links) {
-          var expected = links[text];
-          var actual = linkify.linkify(text, truncate_length);
-          equal(actual, expected, text);
+          equal(linkify.linkify(text), links[text], text);
         }
       });
     };
@@ -51,18 +49,25 @@
     });
 
     // truncate length
-    test_group("truncated", {
-      'user@blah.example.com': '<a target="_blank" href="mailto:user@blah.example.com" title="Email user@blah.example.com">user@blah.examp...</a>',
-      'blah.foo.example.com': '<a target="_blank" href="http://blah.foo.example.com" title="http://blah.foo.example.com">blah.foo.exampl...</a>',
-      'http://www.example.com': '<a target="_blank" href="http://www.example.com" title="http://www.example.com">http://www.exam...</a>',
-    }, 15);
+    test("truncate_length", function() {
+      linkify.truncate_length = 15;
+      var links = {
+        'user@blah.example.com': '<a target="_blank" href="mailto:user@blah.example.com" title="Email user@blah.example.com">user@blah.examp...</a>',
+        'blah.foo.example.com': '<a target="_blank" href="http://blah.foo.example.com" title="http://blah.foo.example.com">blah.foo.exampl...</a>',
+        'http://www.example.com': '<a target="_blank" href="http://www.example.com" title="http://www.example.com">http://www.exam...</a>',
+      };
+      for (var text in links) {
+        equal(linkify.linkify(text), links[text], text);
+      }
+      linkify.truncate_length = null;
+    });
 
     // test that matched items are returned
     test("returns matched items", function() {
       var items = ['email@example.com', 'http://example.com/blah'];
       var text = items.join(', ');
       var matched = [];
-      linkify.linkify(text, null, matched);
+      linkify.linkify(text, matched);
       deepEqual(matched, items);
     });
 

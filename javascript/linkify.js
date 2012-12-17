@@ -6,7 +6,11 @@ linkify = {
   RE_URL_ENDCHAR: '[\\w@?^=%&/~\+#-]',              // URL must end with one of these chars
   RE_URL_SCHEME: '(?:http|ftp|https|news|mms)://',  // protocol
 
+  // add <wbr> tags to displayed text to allow wrapping?
   add_wbrs: true,
+
+  // truncate_length - Truncate displayed links to this length
+  truncate_length: null,
 
   // Intialize the linkification variables
   init: function() {
@@ -24,15 +28,14 @@ linkify = {
    * Note: init must be called before this function can be used
    *
    * @param text - String to be linkified
-   * @param truncate_length - Truncate displayed links to this length
    * @param matched_links - Return param (pass by ref) - Array of links matched during linkification
    **/
-  linkify: function(text, truncate_length, matched_links) {
+  linkify: function(text, matched_links) {
     this.init();
 
-    text = this.match_and_replace(this.RE_EMAIL_PATTERN, text, true, false, truncate_length, matched_links);
-    text = this.match_and_replace(this.RE_FULL_URL, text, false, false, truncate_length, matched_links);
-    text = this.match_and_replace(this.RE_OTHER_URL, text, false, true, truncate_length, matched_links);
+    text = this.match_and_replace(this.RE_EMAIL_PATTERN, text, true, false, matched_links);
+    text = this.match_and_replace(this.RE_FULL_URL, text, false, false, matched_links);
+    text = this.match_and_replace(this.RE_OTHER_URL, text, false, true, matched_links);
 
     return text;
   },
@@ -40,7 +43,7 @@ linkify = {
   /**
    * Internal helper function for linkification
    **/
-  match_and_replace: function(pattern, input, is_email, add_http, truncate_length, matched_links) {
+  match_and_replace: function(pattern, input, is_email, add_http, matched_links) {
     var start = 0;
     var offset = 0;
     var match_length = 0;
@@ -105,8 +108,9 @@ linkify = {
       replacement += '"';
 
       // Truncate displayed text if requested
-      if (truncate_length && address.length > truncate_length) {
-        address = address.substr(0, truncate_length) + '...';
+      console.log('truncate_length: ' + this.truncate_length);
+      if (this.truncate_length && address.length > this.truncate_length) {
+        address = address.substr(0, this.truncate_length) + '...';
       }
 
       // Add word break tags to allow wrapping where appropriate
