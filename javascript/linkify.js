@@ -15,6 +15,9 @@ linkify = {
   // Target for links
   link_target: "_blank",
 
+  // Add titles for links?
+  link_titles: true,
+
   // Intialize the linkification variables
   init: function() {
     // already initialized?
@@ -107,16 +110,12 @@ linkify = {
 
       actual = actual.replace(/"/g, '%22');
       replacement += actual+'"';
-      replacement += ' title="';
 
-      if (is_email) {
-        replacement += 'Email '+actual;
+      // add title
+      if (this.link_titles) {
+        var title = is_email ? 'Email ' + actual : actual;
+        replacement += ' title="'+title+'"';
       }
-      else {
-        replacement += actual;
-      }
-
-      replacement += '"';
 
       // Truncate displayed text if requested
       console.log('truncate_length: ' + this.truncate_length);

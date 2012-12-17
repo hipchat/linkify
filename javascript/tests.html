@@ -16,6 +16,7 @@
     // keep replacements simple to shorten strings needed for testing
     linkify.add_wbrs = false;
     linkify.link_target = null;
+    linkify.link_titles = false;
 
     function test_group(name, links) {
       test(name, function() {
@@ -27,27 +28,27 @@
 
     // emails
     test_group("emails", {
-      'user@example.com': '<a href="mailto:user@example.com" title="Email user@example.com">user@example.com</a>'
+      'user@example.com': '<a href="mailto:user@example.com">user@example.com</a>'
     });
 
     // full URLs
     test_group("full urls", {
-      'http://www.example.com': '<a href="http://www.example.com" title="http://www.example.com">http://www.example.com</a>',
-      'http://www.example.com/blah': '<a href="http://www.example.com/blah" title="http://www.example.com/blah">http://www.example.com/blah</a>',
+      'http://www.example.com': '<a href="http://www.example.com">http://www.example.com</a>',
+      'http://www.example.com/blah': '<a href="http://www.example.com/blah">http://www.example.com/blah</a>',
     });
 
     // partial URLs
     test_group("partial urls", {
-      'example.com': '<a href="http://example.com" title="http://example.com">example.com</a>',
-      'www.example.com': '<a href="http://www.example.com" title="http://www.example.com">www.example.com</a>',
-      'example.com/foo': '<a href="http://example.com/foo" title="http://example.com/foo">example.com/foo</a>',
+      'example.com': '<a href="http://example.com">example.com</a>',
+      'www.example.com': '<a href="http://www.example.com">www.example.com</a>',
+      'example.com/foo': '<a href="http://example.com/foo">example.com/foo</a>',
     });
 
     // parentheses
     test_group("parentheses", {
-      'http://www.example.com/some_(parens)_thing': '<a href="http://www.example.com/some_(parens)_thing" title="http://www.example.com/some_(parens)_thing">http://www.example.com/some_(parens)_thing</a>',
-      // 'http://www.example.com/some_(parens)': '<a href="http://www.example.com/some_(parens)" title="http://www.example.com/some_(parens)">http://www.example.com/some_(parens)</a>',
-      // '(http://www.example.com/some_(parens))': '(<a href="http://www.example.com/some_(parens)" title="http://www.example.com/some_(parens)">http://www.example.com/some_(parens)</a>)',
+      'http://www.example.com/some_(parens)_thing': '<a href="http://www.example.com/some_(parens)_thing">http://www.example.com/some_(parens)_thing</a>',
+      // 'http://www.example.com/some_(parens)': '<a href="http://www.example.com/some_(parens)">http://www.example.com/some_(parens)</a>',
+      // '(http://www.example.com/some_(parens))': '(<a href="http://www.example.com/some_(parens)">http://www.example.com/some_(parens)</a>)',
     });
 
     // test that matched items are returned
@@ -63,9 +64,9 @@
     test("link_target", function() {
       linkify.link_target = '_blank';
       var links = {
-        'user@example.com': '<a target="_blank" href="mailto:user@example.com" title="Email user@example.com">user@example.com</a>',
-        'example.com': '<a target="_blank" href="http://example.com" title="http://example.com">example.com</a>',
-        'http://www.example.com': '<a target="_blank" href="http://www.example.com" title="http://www.example.com">http://www.example.com</a>',
+        'user@example.com': '<a target="_blank" href="mailto:user@example.com">user@example.com</a>',
+        'example.com': '<a target="_blank" href="http://example.com">example.com</a>',
+        'http://www.example.com': '<a target="_blank" href="http://www.example.com">http://www.example.com</a>',
       };
       for (var text in links) {
         equal(linkify.linkify(text), links[text], text);
@@ -73,13 +74,27 @@
       linkify.link_target = null;
     });
 
+    // link titles
+    test("link_titles", function() {
+      linkify.link_titles = true;
+      var links = {
+        'user@example.com': '<a href="mailto:user@example.com" title="Email user@example.com">user@example.com</a>',
+        'example.com': '<a href="http://example.com" title="http://example.com">example.com</a>',
+        'http://www.example.com': '<a href="http://www.example.com" title="http://www.example.com">http://www.example.com</a>',
+      };
+      for (var text in links) {
+        equal(linkify.linkify(text), links[text], text);
+      }
+      linkify.link_titles = false;
+    });
+
     // truncate length
     test("truncate_length", function() {
       linkify.truncate_length = 15;
       var links = {
-        'user@blah.example.com': '<a href="mailto:user@blah.example.com" title="Email user@blah.example.com">user@blah.examp...</a>',
-        'blah.foo.example.com': '<a href="http://blah.foo.example.com" title="http://blah.foo.example.com">blah.foo.exampl...</a>',
-        'http://www.example.com': '<a href="http://www.example.com" title="http://www.example.com">http://www.exam...</a>',
+        'user@blah.example.com': '<a href="mailto:user@blah.example.com">user@blah.examp...</a>',
+        'blah.foo.example.com': '<a href="http://blah.foo.example.com">blah.foo.exampl...</a>',
+        'http://www.example.com': '<a href="http://www.example.com">http://www.exam...</a>',
       };
       for (var text in links) {
         equal(linkify.linkify(text), links[text], text);
@@ -91,7 +106,7 @@
     test("add_wbrs", function() {
       linkify.add_wbrs = true;
       var text = 'example.com/foo?a=b';
-      var expected = '<a href="http://example.com/foo?a=b" title="http://example.com/foo?a=b">example.com<wbr>/foo?a<wbr>=b</a>';
+      var expected = '<a href="http://example.com/foo?a=b">example.com<wbr>/foo?a<wbr>=b</a>';
       var actual = linkify.linkify(text);
       equal(actual, expected, text);
       linkify.add_wbrs = false;
