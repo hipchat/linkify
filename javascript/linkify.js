@@ -118,7 +118,6 @@ linkify = {
       }
 
       // Truncate displayed text if requested
-      console.log('truncate_length: ' + this.truncate_length);
       if (this.truncate_length && address.length > this.truncate_length) {
         address = address.substr(0, this.truncate_length) + '...';
       }
