@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    <meta charset="utf-8">
+    <title>Linkify.js tests</title>
+    <script src="http://cdnjs.cloudflare.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
+    <script src="http://code.jquery.com/qunit/qunit-1.10.0.js"></script>
+    <link rel="stylesheet" href="http://code.jquery.com/qunit/qunit-1.10.0.css" type="text/css">
+    <script src="linkify.js"></script>
+  </head>
+  <body>
+    <div id="qunit"></div>
+  </body>
+  <script type="text/javascript" charset="utf-8">
+
+    function test_group(name, links) {
+      test(name, function() {
+        for (var text in links) {
+          var expected = links[text];
+          var actual = linkify.linkify(text);
+          equal(actual, expected, text);
+        }
+      });
+    };
+
+    linkify.init();
+
+    // emails
+    test_group("emails", {
+      'user@example.com': '<a target="_blank" href="mailto:user@example.com" title="Email user@example.com">user@example.com</a>'
+    });
+
+    // simple links
+    test_group("simple links", {
+      'http://www.example.com': '<a target="_blank" href="http://www.example.com" title="http://www.example.com">http:<wbr>/<wbr>/www.example.com</a>',
+      'www.example.com': '<a target="_blank" href="http://www.example.com" title="http://www.example.com">www.example.com</a>',
+      'example.com': '<a target="_blank" href="http://example.com" title="http://example.com">example.com</a>'
+    });
+
+    // parentheses
+    test_group("parentheses", {
+      'http://www.example.com/some_(parens)_thing': '<a target="_blank" href="http://www.example.com/some_(parens)_thing" title="http://www.example.com/some_(parens)_thing">http:<wbr>/<wbr>/www.example.com<wbr>/some_(parens)_thing</a>',
+      'http://www.example.com/some_(parens)': '<a target="_blank" href="http://www.example.com/some_(parens)" title="http://www.example.com/some_(parens)">http:<wbr>/<wbr>/www.example.com<wbr>/some_(parens)</a>',
+      '(http://www.example.com/some_(parens))': '(<a target="_blank" href="http://www.example.com/some_(parens)" title="http://www.example.com/some_(parens)">http:<wbr>/<wbr>/www.example.com<wbr>/some_(parens)</a>)',
+    });
+
+  </script>
+</html>
