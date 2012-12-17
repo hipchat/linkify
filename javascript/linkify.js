@@ -28,9 +28,9 @@ linkify = {
   linkify: function(text, truncate_length, matched_links) {
     this.init();
 
-    text = this.match_and_replace(this.RE_EMAIL_PATTERN, text, false, false, truncate_length, matched_links);
-    text = this.match_and_replace(this.RE_FULL_URL, text, true, false, truncate_length, matched_links);
-    text = this.match_and_replace(this.RE_OTHER_URL, text, true, true, truncate_length, matched_links);
+    text = this.match_and_replace(this.RE_EMAIL_PATTERN, text, true, false, truncate_length, matched_links);
+    text = this.match_and_replace(this.RE_FULL_URL, text, false, false, truncate_length, matched_links);
+    text = this.match_and_replace(this.RE_OTHER_URL, text, false, true, truncate_length, matched_links);
 
     return text;
   },
@@ -38,11 +38,7 @@ linkify = {
   /**
    * Internal helper function for linkification
    **/
-  match_and_replace: function(pattern, input, is_url, add_http, truncate_length, matched_links) {
-    if (typeof add_http == 'undefined') {
-      add_http = true;
-    }
-
+  match_and_replace: function(pattern, input, is_email, add_http, truncate_length, matched_links) {
     var start = 0;
     var offset = 0;
     var match_length = 0;
@@ -82,14 +78,14 @@ linkify = {
 
       // Do the actual replecement of text with anchor tag
       var address = input.substr(start, match_length);
-      var actual = input.substr(start, match_length);
+      var actual = address;
 
       if (add_http) {
         actual = 'http://'+actual;
       }
       var replacement = '<a target="_blank" href="';
 
-      if (!is_url) {
+      if (is_email) {
         replacement += 'mailto:';
       }
 
@@ -97,14 +93,19 @@ linkify = {
       replacement += actual+'"';
       replacement += ' title="';
 
-      if (is_url) replacement += actual;
-      else replacement += 'Email '+actual;
+      if (is_email) {
+        replacement += 'Email '+actual;
+      }
+      else {
+        replacement += actual;
+      }
 
       replacement += '"';
 
+      // Truncate displayed text if requested
       if (truncate_length && address.length > truncate_length) {
-            address = address.substr(0, truncate_length) + '...';
-        }
+        address = address.substr(0, truncate_length) + '...';
+      }
 
       // Add word break tags to allow wrapping where appropriate
       replacement += '>'+address.replace(new RegExp("([/=])", 'g'), "<wbr>$1")+'</a>';
