@@ -6,11 +6,14 @@ linkify = {
   RE_URL_ENDCHAR: '[\\w@?^=%&/~\+#-]',              // URL must end with one of these chars
   RE_URL_SCHEME: '(?:http|ftp|https|news|mms)://',  // protocol
 
-  // add <wbr> tags to displayed text to allow wrapping?
+  // Add <wbr> tags to displayed text to allow wrapping?
   add_wbrs: true,
 
-  // truncate_length - Truncate displayed links to this length
+  // Truncate displayed links to this length
   truncate_length: null,
+
+  // Target for links
+  link_target: "_blank",
 
   // Intialize the linkification variables
   init: function() {
@@ -88,7 +91,15 @@ linkify = {
       if (add_http) {
         actual = 'http://'+actual;
       }
-      var replacement = '<a target="_blank" href="';
+
+      var replacement = '<a';
+
+      // link target?
+      if (this.link_target) {
+        replacement += ' target="'+this.link_target+'"';
+      }
+
+      replacement += ' href="';
 
       if (is_email) {
         replacement += 'mailto:';
