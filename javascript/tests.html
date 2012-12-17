@@ -30,11 +30,17 @@
       'user@example.com': '<a target="_blank" href="mailto:user@example.com" title="Email user@example.com">user@example.com</a>'
     });
 
-    // simple links
-    test_group("simple links", {
+    // full URLs
+    test_group("full urls", {
       'http://www.example.com': '<a target="_blank" href="http://www.example.com" title="http://www.example.com">http:<wbr>/<wbr>/www.example.com</a>',
+      'http://www.example.com/blah': '<a target="_blank" href="http://www.example.com/blah" title="http://www.example.com/blah">http:<wbr>/<wbr>/www.example.com<wbr>/blah</a>',
+    });
+
+    // partial URLs
+    test_group("partial urls", {
+      'example.com': '<a target="_blank" href="http://example.com" title="http://example.com">example.com</a>',
       'www.example.com': '<a target="_blank" href="http://www.example.com" title="http://www.example.com">www.example.com</a>',
-      'example.com': '<a target="_blank" href="http://example.com" title="http://example.com">example.com</a>'
+      'example.com/foo': '<a target="_blank" href="http://example.com/foo" title="http://example.com/foo">example.com<wbr>/foo</a>',
     });
 
     // parentheses
