@@ -6,12 +6,12 @@ linkify = {
   // adapted from:
   // http://daringfireball.net/2010/07/improved_regex_for_matching_urls
   RE_URL_MIDCHAR: '(?:' +
-                    '[^\\s()<>]+' +          // non-space, non-()<>
-                    '|' +                    // or
-                    '\\(([^\\s()<>]+)\\)' +  // stuff in parens
+                    '[^\\s()]+' +    // non-space, non-()
+                    '|' +            // or
+                    '\\((\\S+)\\)' + // non-space in parens
                   ')',
   RE_URL_ENDCHAR: '(?:' +
-                    '\\(([^\\s()<>]+)\\)' +                // stuff in parens
+                    '\\((\\S+)\\)' +                       // non-space in parens
                     '|' +                                  // or
                     '[^\\s`!()\\[\\]{};:\'".,<>?«»“”‘’]' + // none of these
                   ')',

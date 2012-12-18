@@ -84,7 +84,12 @@
         'http://foo.com/x_(wikipedia)_x': ['http://foo.com/x_(wikipedia)_x'],
         // make sure lots of stuff in parens doesn't trigger http://stackoverflow.com/questions/12803859/regexp-and-string-combination-crashes-chrome
         'https://foo.com/?target=alias(xxxxxxxxxxxxxxxxxxxxxxxxxxxx)': ['https://foo.com/?target=alias(xxxxxxxxxxxxxxxxxxxxxxxxxxxx)'],
-        // 'https://foo.com/?target=alias(foo(xxxxxxxxxxxxxxxxxxxxxxxxxxxx))': ['https://foo.com/?target=alias(foo(xxxxxxxxxxxxxxxxxxxxxxxxxxxx))'],
+        'https://foo.com/?target=alias(foo(xxxxxxxxxxxxxxxxxxxxxxxxxxxx))': ['https://foo.com/?target=alias(foo(xxxxxxxxxxxxxxxxxxxxxxxxxxxx))'],
+        'https://foo.com/?target=alias(foo(x))&b=x': ['https://foo.com/?target=alias(foo(x))&b=x'],
+        // links with parens NOT supported when wrapped in parens
+        // final paren will be captured. its too complicated to only match
+        // perfectly nested parens
+        '(https://foo.com/?target=alias(foo(x)))': ['https://foo.com/?target=alias(foo(x)))'],
 
         // file:
         'file:/localhost/foo.html': ['file:/localhost/foo.html'],
