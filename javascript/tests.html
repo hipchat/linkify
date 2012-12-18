@@ -80,6 +80,9 @@
         'example.com?foo=bar': ['http://example.com?foo=bar'],
         'example.com?foo=bar#blah': ['http://example.com?foo=bar#blah'],
 
+        // ports
+        'http://example.com:8080/blah': ['http://example.com:8080/blah'],
+
         // surrounding punctuation
         'link:http://example.com': ['http://example.com'],
         'http://example.com.': ['http://example.com'],
