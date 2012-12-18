@@ -120,6 +120,10 @@
         // stuff we don't want matched
         'file.py': [],
         'thing.sh': [],
+
+        // custom protocols
+        'x-proto://blah': ['x-proto://blah'],
+        'irc://irc.freenode.net:6667/hipchat?nopass': ['irc://irc.freenode.net:6667/hipchat?nopass']
       };
       for (var text in items) {
         var expected_matches = items[text];
