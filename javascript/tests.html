@@ -74,12 +74,17 @@
         ',http://example.com,': ['http://example.com'],
         '(http://example.com)': ['http://example.com'],
         '<http://example.com>': ['http://example.com'],
+        '`http://example.com`': ['http://example.com'],
 
         // quotes
         'http://example.com?foo=bar"baz': ['http://example.com?foo=bar%22baz'],
 
         // parens in url
-        // 'http://foo.com/blah_(wikipedia)': ['http://foo.com/blah_(wikipedia)'],
+        'http://foo.com/x_(wikipedia)': ['http://foo.com/x_(wikipedia)'],
+        'http://foo.com/x_(wikipedia)_x': ['http://foo.com/x_(wikipedia)_x'],
+        // make sure lots of stuff in parens doesn't trigger http://stackoverflow.com/questions/12803859/regexp-and-string-combination-crashes-chrome
+        'https://foo.com/?target=alias(xxxxxxxxxxxxxxxxxxxxxxxxxxxx)': ['https://foo.com/?target=alias(xxxxxxxxxxxxxxxxxxxxxxxxxxxx)'],
+        // 'https://foo.com/?target=alias(foo(xxxxxxxxxxxxxxxxxxxxxxxxxxxx))': ['https://foo.com/?target=alias(foo(xxxxxxxxxxxxxxxxxxxxxxxxxxxx))'],
 
         // file:
         'file:/localhost/foo.html': ['file:/localhost/foo.html'],
