@@ -25,7 +25,7 @@
       'user-foo@blah.example.com':
         '<a href="mailto:user-foo@blah.example.com">user-foo@blah.example.com</a>'
     };
-    test("emails", function() {
+    test("emails html", function() {
       for (var line in emails) {
         equal(linkify.linkify(line), emails[line], line);
       }
@@ -38,7 +38,7 @@
       'http://www.example.com/blah':
         '<a href="http://www.example.com/blah">http://www.example.com/blah</a>',
     };
-    test("full urls", function() {
+    test("full urls html", function() {
       for (var line in urls) {
         equal(linkify.linkify(line), urls[line], line);
       }
@@ -50,14 +50,14 @@
       'www.example.com': '<a href="http://www.example.com">www.example.com</a>',
       'example.com/foo': '<a href="http://example.com/foo">example.com/foo</a>',
     };
-    test("partial urls", function() {
+    test("partial urls html", function() {
       for (var line in urls) {
         equal(linkify.linkify(line), urls[line], line);
       }
     });
 
     // test that matched items are returned
-    test("returns matched items", function() {
+    test("matches links", function() {
       var items = {
         // email
         'email@example.com': ['email@example.com'],
@@ -104,7 +104,7 @@
     });
 
     // link target
-    test("link_target", function() {
+    test("link_target enabled", function() {
       linkify.link_target = '_blank';
       var links = {
         'user@example.com': '<a target="_blank" href="mailto:user@example.com">user@example.com</a>',
@@ -118,7 +118,7 @@
     });
 
     // link titles
-    test("link_titles", function() {
+    test("link_titles enabled", function() {
       linkify.link_titles = true;
       var links = {
         'user@example.com': '<a href="mailto:user@example.com" title="Email user@example.com">user@example.com</a>',
@@ -132,7 +132,7 @@
     });
 
     // truncate length
-    test("truncate_length", function() {
+    test("truncate_length enabled", function() {
       linkify.truncate_length = 15;
       var links = {
         'user@blah.example.com': '<a href="mailto:user@blah.example.com">user@blah.examp...</a>',
@@ -146,7 +146,7 @@
     });
 
     // test add_wbrs
-    test("add_wbrs", function() {
+    test("add_wbrs enabled", function() {
       linkify.add_wbrs = true;
       var text = 'example.com/foo?a=b';
       var expected = '<a href="http://example.com/foo?a=b">example.com<wbr>/foo?a<wbr>=b</a>';
