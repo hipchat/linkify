@@ -18,46 +18,78 @@
     linkify.link_target = null;
     linkify.link_titles = false;
 
-    function test_group(name, links) {
-      test(name, function() {
-        for (var text in links) {
-          equal(linkify.linkify(text), links[text], text);
-        }
-      });
+    // emails -> html
+    var emails = {
+      'user@example.com':
+        '<a href="mailto:user@example.com">user@example.com</a>',
+      'user-foo@blah.example.com':
+        '<a href="mailto:user-foo@blah.example.com">user-foo@blah.example.com</a>'
     };
-
-    // emails
-    test_group("emails", {
-      'user@example.com': '<a href="mailto:user@example.com">user@example.com</a>'
+    test("emails", function() {
+      for (var line in emails) {
+        equal(linkify.linkify(line), emails[line], line);
+      }
     });
 
-    // full URLs
-    test_group("full urls", {
-      'http://www.example.com': '<a href="http://www.example.com">http://www.example.com</a>',
-      'http://www.example.com/blah': '<a href="http://www.example.com/blah">http://www.example.com/blah</a>',
+    // full URLs -> html
+    var urls = {
+      'http://www.example.com':
+        '<a href="http://www.example.com">http://www.example.com</a>',
+      'http://www.example.com/blah':
+        '<a href="http://www.example.com/blah">http://www.example.com/blah</a>',
+    };
+    test("full urls", function() {
+      for (var line in urls) {
+        equal(linkify.linkify(line), urls[line], line);
+      }
     });
 
-    // partial URLs
-    test_group("partial urls", {
+    // partial URLs -> html
+    var urls = {
       'example.com': '<a href="http://example.com">example.com</a>',
       'www.example.com': '<a href="http://www.example.com">www.example.com</a>',
       'example.com/foo': '<a href="http://example.com/foo">example.com/foo</a>',
-    });
-
-    // parentheses
-    test_group("parentheses", {
-      'http://www.example.com/some_(parens)_thing': '<a href="http://www.example.com/some_(parens)_thing">http://www.example.com/some_(parens)_thing</a>',
-      // 'http://www.example.com/some_(parens)': '<a href="http://www.example.com/some_(parens)">http://www.example.com/some_(parens)</a>',
-      // '(http://www.example.com/some_(parens))': '(<a href="http://www.example.com/some_(parens)">http://www.example.com/some_(parens)</a>)',
+    };
+    test("partial urls", function() {
+      for (var line in urls) {
+        equal(linkify.linkify(line), urls[line], line);
+      }
     });
 
     // test that matched items are returned
     test("returns matched items", function() {
-      var items = ['email@example.com', 'http://example.com/blah'];
-      var text = items.join(', ');
-      var matched = [];
-      linkify.linkify(text, matched);
-      deepEqual(matched, items);
+      var items = {
+        // email
+        'email@example.com': ['email@example.com'],
+
+        // simple stuff
+        'http://example.com/blah': ['http://example.com/blah'],
+        'http://example.com/blah?foo=bar': ['http://example.com/blah?foo=bar'],
+        'http://example.com?foo=bar': ['http://example.com?foo=bar'],
+        'http://example.com?foo=bar#blah': ['http://example.com?foo=bar#blah'],
+
+        // surrounding punctuation
+        'link:http://example.com': ['http://example.com'],
+        'http://example.com.': ['http://example.com'],
+        ',http://example.com,': ['http://example.com'],
+        '(http://example.com)': ['http://example.com'],
+        '<http://example.com>': ['http://example.com'],
+
+        // parens in url
+        // 'http://foo.com/blah_(wikipedia)': ['http://foo.com/blah_(wikipedia)'],
+
+        // file://
+        // 'file://localhost/foo.html': ['file://localhost/foo.html'],
+
+        // local windows path
+        // '\\\\filez\\blah': ['\\\\filez\\blah']
+      };
+      for (var text in items) {
+        var expected_matches = items[text];
+        var matched = [];
+        linkify.linkify(text, matched);
+        deepEqual(matched, expected_matches, text);
+      }
     });
 
     // link target
