@@ -78,8 +78,10 @@
         // parens in url
         // 'http://foo.com/blah_(wikipedia)': ['http://foo.com/blah_(wikipedia)'],
 
-        // file://
+        // file:
+        'file:/localhost/foo.html': ['file:/localhost/foo.html'],
         'file://localhost/foo.html': ['file://localhost/foo.html'],
+        'file:///localhost/foo.html': ['file:///localhost/foo.html'],
 
         // local windows path
         // '\\\\filez\\blah': ['\\\\filez\\blah'],
