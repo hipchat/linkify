@@ -63,10 +63,22 @@
         'email@example.com': ['email@example.com'],
 
         // simple stuff
+        'http://example.com': ['http://example.com'],
+        'http://example.com#foo': ['http://example.com#foo'],
         'http://example.com/blah': ['http://example.com/blah'],
+        'http://example.com/blah#foo': ['http://example.com/blah#foo'],
         'http://example.com/blah?foo=bar': ['http://example.com/blah?foo=bar'],
+        'http://example.com/?foo=bar': ['http://example.com/?foo=bar'],
         'http://example.com?foo=bar': ['http://example.com?foo=bar'],
         'http://example.com?foo=bar#blah': ['http://example.com?foo=bar#blah'],
+        'example.com': ['http://example.com'],
+        'example.com#foo': ['http://example.com#foo'],
+        'example.com/blah': ['http://example.com/blah'],
+        'example.com/blah#foo': ['http://example.com/blah#foo'],
+        'example.com/blah?foo=bar': ['http://example.com/blah?foo=bar'],
+        'example.com/?foo=bar': ['http://example.com/?foo=bar'],
+        'example.com?foo=bar': ['http://example.com?foo=bar'],
+        'example.com?foo=bar#blah': ['http://example.com?foo=bar#blah'],
 
         // surrounding punctuation
         'link:http://example.com': ['http://example.com'],
