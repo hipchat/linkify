@@ -75,6 +75,9 @@
         '(http://example.com)': ['http://example.com'],
         '<http://example.com>': ['http://example.com'],
 
+        // quotes
+        'http://example.com?foo=bar"baz': ['http://example.com?foo=bar%22baz'],
+
         // parens in url
         // 'http://foo.com/blah_(wikipedia)': ['http://foo.com/blah_(wikipedia)'],
 
