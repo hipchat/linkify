@@ -82,7 +82,11 @@
         'file://localhost/foo.html': ['file://localhost/foo.html'],
 
         // local windows path
-        // '\\\\filez\\blah': ['\\\\filez\\blah']
+        // '\\\\filez\\blah': ['\\\\filez\\blah'],
+
+        // stuff we don't want matched
+        'file.py': [],
+        'thing.sh': [],
       };
       for (var text in items) {
         var expected_matches = items[text];
