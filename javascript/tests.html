@@ -36,7 +36,7 @@
       'http://www.example.com':
         '<a href="http://www.example.com">http://www.example.com</a>',
       'http://www.example.com/blah':
-        '<a href="http://www.example.com/blah">http://www.example.com/blah</a>',
+        '<a href="http://www.example.com/blah">http://www.example.com/blah</a>'
     };
     test("full urls html", function() {
       for (var line in urls) {
@@ -48,7 +48,7 @@
     var urls = {
       'example.com': '<a href="http://example.com">example.com</a>',
       'www.example.com': '<a href="http://www.example.com">www.example.com</a>',
-      'example.com/foo': '<a href="http://example.com/foo">example.com/foo</a>',
+      'example.com/foo': '<a href="http://example.com/foo">example.com/foo</a>'
     };
     test("partial urls html", function() {
       for (var line in urls) {
@@ -142,7 +142,7 @@
       var links = {
         'user@example.com': '<a target="_blank" href="mailto:user@example.com">user@example.com</a>',
         'example.com': '<a target="_blank" href="http://example.com">example.com</a>',
-        'http://www.example.com': '<a target="_blank" href="http://www.example.com">http://www.example.com</a>',
+        'http://www.example.com': '<a target="_blank" href="http://www.example.com">http://www.example.com</a>'
       };
       for (var text in links) {
         equal(linkify.linkify(text), links[text], text);
@@ -156,12 +156,32 @@
       var links = {
         'user@example.com': '<a href="mailto:user@example.com" title="Email user@example.com">user@example.com</a>',
         'example.com': '<a href="http://example.com" title="http://example.com">example.com</a>',
-        'http://www.example.com': '<a href="http://www.example.com" title="http://www.example.com">http://www.example.com</a>',
+        'http://www.example.com': '<a href="http://www.example.com" title="http://www.example.com">http://www.example.com</a>'
       };
       for (var text in links) {
         equal(linkify.linkify(text), links[text], text);
       }
       linkify.link_titles = false;
+    });
+
+    // proper email links are generated
+    test("email links", function() {
+      var obj = {
+        'foo (user@blah.example.com)': 'foo (<a href="mailto:user@blah.example.com">user@blah.example.com</a>)',
+        'foo user@blah.example.com': 'foo <a href="mailto:user@blah.example.com">user@blah.example.com</a>'
+      };
+      for (var item in obj) {
+        equal(linkify.linkify(item), obj[item], linkify.linkify(item) + ' == ' + obj[item]);
+      }
+      // show that links generated with previous email regex don't match expected values
+      linkify.RE_EMAIL_PATTERN = '(?:\\s|\\A|^)[\\w.-]+\\+*[\\w.-]+@(?:(?:[\\w-]+\\.)+[A-Za-z]{2,6}|(?:\\d{1,3}\\.){3}\\d{1,3})';
+
+      for (var item in obj) {
+        notEqual(linkify.linkify(item), obj[item], linkify.linkify(item) + ' != ' + obj[item]);
+      }
+
+      // reset to current regex
+      linkify.RE_EMAIL_PATTERN = "[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?";
     });
 
     // truncate length
@@ -170,7 +190,7 @@
       var links = {
         'user@blah.example.com': '<a href="mailto:user@blah.example.com">user@blah.examp...</a>',
         'blah.foo.example.com': '<a href="http://blah.foo.example.com">blah.foo.exampl...</a>',
-        'http://www.example.com': '<a href="http://www.example.com">http://www.exam...</a>',
+        'http://www.example.com': '<a href="http://www.example.com">http://www.exam...</a>'
       };
       for (var text in links) {
         equal(linkify.linkify(text), links[text], text);
