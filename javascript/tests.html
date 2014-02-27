@@ -123,6 +123,7 @@
         // stuff we don't want matched
         'file.py': [],
         'thing.sh': [],
+        'javascript://foobar/%0aalert(0)': [],
 
         // custom protocols
         'x-proto://blah': ['x-proto://blah'],
@@ -196,6 +197,16 @@
         equal(linkify.linkify(text), links[text], text);
       }
       linkify.truncate_length = null;
+    });
+
+    // test javascript is not rendered as links
+    test("do not link these", function() {
+        var links = {
+            'javascript://foobar/%0aalert(0)': 'javascript://foobar/%0aalert(0)'
+        };
+        for (var text in links) {
+            equal(linkify.linkify(text), links[text], text);
+        }
     });
 
     // test add_wbrs
