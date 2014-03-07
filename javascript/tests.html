@@ -93,7 +93,9 @@
         '"http://example.com"': ['http://example.com'],
 
         // quotes
-        'http://example.com?foo=bar"baz': ['http://example.com?foo=bar%22baz'],
+        'http://example.com?foo=bar"baz': ['http://example.com?foo=bar'],
+        'http://example.com?foo=bar%22baz': ['http://example.com?foo=bar%22baz'],
+        'http://example.com???foo=bar%22baz': ['http://example.com???foo=bar%22baz'],
 
         // parens in url
         'http://foo.com/x_(wikipedia)': ['http://foo.com/x_(wikipedia)'],
@@ -102,10 +104,8 @@
         'https://foo.com/?target=alias(xxxxxxxxxxxxxxxxxxxxxxxxxxxx)': ['https://foo.com/?target=alias(xxxxxxxxxxxxxxxxxxxxxxxxxxxx)'],
         'https://foo.com/?target=alias(foo(xxxxxxxxxxxxxxxxxxxxxxxxxxxx))': ['https://foo.com/?target=alias(foo(xxxxxxxxxxxxxxxxxxxxxxxxxxxx))'],
         'https://foo.com/?target=alias(foo(x))&b=x': ['https://foo.com/?target=alias(foo(x))&b=x'],
-        // links with parens NOT supported when wrapped in parens
-        // final paren will be captured. its too complicated to only match
-        // perfectly nested parens
-        '(https://foo.com/?target=alias(foo(x)))': ['https://foo.com/?target=alias(foo(x)))'],
+        // Supports 2 level nested parens
+        '(https://foo.com/?target=alias(foo(x)))': ['https://foo.com/?target=alias(foo(x))'],
 
         // file:
         'file:/localhost/foo.html': ['file:/localhost/foo.html'],
@@ -218,6 +218,15 @@
       equal(actual, expected, text);
       linkify.add_wbrs = false;
     });
+
+    test("json_block", function() {
+      var text = 
+        '{"user":{"birthdate":"1986-10-20T00:00:00Z","email":"eric20@ploonky.com","fullname":"Eric Abrahamsen","handle":"eabraham20","id":14,"profile_pic":{"id":1073741823,"file":{"url":"http://tuorbit.ploonky.com/placeholder.png","bounded":{"url":"http://tuorbit.ploonky.com/bounded_placeholder.png"}}}},"authentication_token":"2b025b93f37f803faa59aea602fdf009"}';
+      var expected =
+        '{"user":{"birthdate":"1986-10-20T00:00:00Z","email":"<a href="mailto:eric20@ploonky.com">eric20@ploonky.com</a>","fullname":"Eric Abrahamsen","handle":"eabraham20","id":14,"profile_pic":{"id":1073741823,"file":{"url":"<a href="http://tuorbit.ploonky.com/placeholder.png">http://tuorbit.ploonky.com/placeholder.png</a>","bounded":{"url":"<a href="http://tuorbit.ploonky.com/bounded_placeholder.png">http://tuorbit.ploonky.com/bounded_placeholder.png</a>"}}}},"authentication_token":"2b025b93f37f803faa59aea602fdf009"}';
+      var actual = linkify.linkify(text);
+      equal(actual, expected, text);
+    })
 
   </script>
 </html>
