@@ -1,20 +1,49 @@
 linkify = {
   // Static values used in creating the URL regexes
-  RE_EMAIL_PATTERN: "[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?",
-  RE_URL_SCHEME: '\\b(?:mailto:|(?:(?!javascript)[\\w-]{2,}?):/{1,3})',  // protocol - supports mailto: and everything *:// except javascript:
-  RE_TLD: '(?:aero|arpa|biz|com|coop|edu|gov|info|int|mil|museum|name|net|org|travel|ac|ad|ae|af|ag|ai|al|am|an|ao|aq|ar|as|at|au|aw|az|ba|bb|bd|be|bf|bg|bh|bi|bj|bm|bn|bo|br|bs|bt|bv|bw|by|bz|ca|cc|cd|cf|cg|ch|ci|ck|cl|cm|cn|co|cr|cu|cv|cx|cy|cz|de|dj|dk|dm|do|dz|ec|ee|eg|eh|er|es|et|fi|fj|fk|fm|fo|fr|ga|gd|ge|gf|gg|gh|gi|gl|gm|gn|gp|gq|gr|gs|gt|gu|gw|gy|hk|hm|hn|hr|ht|hu|id|ie|il|im|in|io|iq|ir|is|it|je|jm|jo|jp|ke|kg|kh|ki|km|kn|kp|kr|kw|ky|kz|la|lb|lc|li|lk|lr|ls|lt|lu|lv|ly|ma|mc|md|mg|mh|mk|ml|mm|mn|mo|mp|mq|mr|ms|mt|mu|mv|mw|mx|my|mz|na|nc|ne|nf|ng|ni|nl|no|np|nr|nu|nz|om|pa|pe|pf|pg|ph|pk|pl|pm|pn|pr|ps|pt|pw|qa|re|ro|ru|rw|sa|sb|sc|sd|se|sg|si|sj|sk|sl|sm|sn|so|sr|st|sv|sy|sz|tc|td|tf|tg|th|tj|tk|tm|tn|to|tp|tr|tt|tv|tw|tz|ua|ug|uk|um|us|uy|uz|va|vc|ve|vg|vi|vn|vu|wf|ws|ye|yt|yu|za|zm|zw)',
-  // adapted from:
-  // http://daringfireball.net/2010/07/improved_regex_for_matching_urls
-  RE_URL_MIDCHAR: '(?:' +
-                    '[^\\s()]+' +    // non-space, non-()
-                    '|' +            // or
-                    '\\((\\S+)\\)' + // non-space in parens
-                  ')',
-  RE_URL_ENDCHAR: '(?:' +
-                    '\\((\\S+)\\)' +                       // non-space in parens
-                    '|' +                                  // or
-                    '[^\\s`!()\\[\\]{};:\'".,<>?«»“”‘’]' + // none of these
-                  ')',
+  RE_EMAIL_PATTERN: "[a-z0-9!#$%&'*+/=?^_`{|}~\\-]+(?:[.][a-z0-9!#$%&'*+/=?^_`{|}~\\-]+)*@(?:[a-z0-9](?:[a-z0-9\\-]*[a-z0-9])?[.])+[a-z0-9](?:[a-z0-9\\-]*[a-z0-9])?",
+  RE_URL: 
+    '\\b' +
+    '(' +
+      '(?:' +
+        '((?!javascript)[a-z][\\w\\-]+:' + // URL protocol and colon (not javascript:) -- captured so we can add http if needed
+        '(?:' +
+          '/{1,3}' + // 1-3 slashes
+        '))' +
+        '|' +
+        '(?:[a-z0-9.\\-]+[.]' +
+        '(?:com|net|org|edu|gov|mil|aero|asia|biz|cat|coop|info|int|jobs|mobi|museum|name|post|pro|tel|travel|xxx|ac|ad|ae|af|ag|ai|al|am|an|ao|aq|ar|as|at|au|aw|ax|az|ba|bb|bd|be|bf|bg|bh|bi|bj|bm|bn|bo|br|bs|bt|bv|bw|by|bz|ca|cc|cd|cf|cg|ch|ci|ck|cl|cm|cn|co|cr|cs|cu|cv|cx|cy|cz|dd|de|dj|dk|dm|do|dz|ec|ee|eg|eh|er|es|et|eu|fi|fj|fk|fm|fo|fr|ga|gb|gd|ge|gf|gg|gh|gi|gl|gm|gn|gp|gq|gr|gs|gt|gu|gw|gy|hk|hm|hn|hr|ht|hu|id|ie|il|im|in|io|iq|ir|is|it|je|jm|jo|jp|ke|kg|kh|ki|km|kn|kp|kr|kw|ky|kz|la|lb|lc|li|lk|lr|ls|lt|lu|lv|ly|ma|mc|md|me|mg|mh|mk|ml|mm|mn|mo|mp|mq|mr|ms|mt|mu|mv|mw|mx|my|mz|na|nc|ne|nf|ng|ni|nl|no|np|nr|nu|nz|om|pa|pe|pf|pg|ph|pk|pl|pm|pn|pr|ps|pt|pw|py|qa|re|ro|rs|ru|rw|sa|sb|sc|sd|se|sg|sh|si|sj|ja|sk|sl|sm|sn|so|sr|ss|st|su|sv|sx|sy|sz|tc|td|tf|tg|th|tj|tk|tl|tm|tn|to|tp|tr|tt|tv|tw|tz|ua|ug|uk|us|uy|uz|va|vc|ve|vg|vi|vn|vu|wf|ws|ye|yt|yu|za|zm|zw)' +
+        '[/#?])' +
+      ')' +
+      '[\\w#?]' + // force a word char or #? char after the url scheme
+      '(?:' +
+        '(?:%[0-9a-f]{2})' + // allow url encoded values
+        '|' +
+        '(?::\\d+)' + // :port, insert no colons allowed joke here
+        '|' +
+        '[a-z0-9\\-._~/?#[\\]@!$&\'*+,;=]' +  // allowable chars per http://tools.ietf.org/html/rfc3986#section-2
+        '|' +
+        '(?:\\([^\\s\\()]*?\\([^\\s\\()]+\\)[^\\s\\()]*?\\))' + // balanced parens, one level deep: (…(…)…)
+        '|' + 
+        '(?:\\([^\\s]+?\\))' + // balanced parens, non-recursive: (…)
+      ')+' +
+      '(?:' +
+        '(?:\\([^\\s()]*?\\([^\\s()]+\\)[^\\s()]*?\\))' + //balanced parens, one level deep: (…(…)…)
+        '|' +
+        '(?:\\([^\\s]+?\\))' + // balanced parens, non-recursive: (…)
+        '|' +
+        '[^\\s`!()\\[\\]:{};\'".,<>?«»“”‘’]' + // not a space or one of these punct chars
+      ')' +
+      '|' + // OR, the following to match naked domains:
+      '(?:' +
+        '[a-z0-9]+' +
+        '(?:[.\\-][a-z0-9]+)*' +
+        '[.]' +
+        // removed py and sh to avoid linking script filenames
+        '(?:com|net|org|edu|gov|mil|aero|asia|biz|cat|coop|info|int|jobs|mobi|museum|name|post|pro|tel|travel|xxx|ac|ad|ae|af|ag|ai|al|am|an|ao|aq|ar|as|at|au|aw|ax|az|ba|bb|bd|be|bf|bg|bh|bi|bj|bm|bn|bo|br|bs|bt|bv|bw|by|bz|ca|cc|cd|cf|cg|ch|ci|ck|cl|cm|cn|co|cr|cs|cu|cv|cx|cy|cz|dd|de|dj|dk|dm|do|dz|ec|ee|eg|eh|er|es|et|eu|fi|fj|fk|fm|fo|fr|ga|gb|gd|ge|gf|gg|gh|gi|gl|gm|gn|gp|gq|gr|gs|gt|gu|gw|gy|hk|hm|hn|hr|ht|hu|id|ie|il|im|in|io|iq|ir|is|it|je|jm|jo|jp|ke|kg|kh|ki|km|kn|kp|kr|kw|ky|kz|la|lb|lc|li|lk|lr|ls|lt|lu|lv|ly|ma|mc|md|me|mg|mh|mk|ml|mm|mn|mo|mp|mq|mr|ms|mt|mu|mv|mw|mx|my|mz|na|nc|ne|nf|ng|ni|nl|no|np|nr|nu|nz|om|pa|pe|pf|pg|ph|pk|pl|pm|pn|pr|ps|pt|pw|qa|re|ro|rs|ru|rw|sa|sb|sc|sd|se|sg|si|sj|ja|sk|sl|sm|sn|so|sr|ss|st|su|sv|sx|sy|sz|tc|td|tf|tg|th|tj|tk|tl|tm|tn|to|tp|tr|tt|tv|tw|tz|ua|ug|uk|us|uy|uz|va|vc|ve|vg|vi|vn|vu|wf|ws|ye|yt|yu|za|zm|zw)' +
+        '\\b/?' +
+        '(?!@)' + // not succeeded by a @, avoid matching "foo.na" in "foo.na@example.com"
+      ')' +
+    ')',
 
   // Add <wbr> tags to displayed text to allow wrapping?
   add_wbrs: true,
@@ -28,17 +57,6 @@ linkify = {
   // Add titles for links?
   link_titles: true,
 
-  // Intialize the linkification variables
-  init: function() {
-    // already initialized?
-    if (this.RE_URL_ENDING) {
-      return;
-    }
-    this.RE_URL_ENDING = '(?:'+this.RE_URL_MIDCHAR+'*'+this.RE_URL_ENDCHAR+')?';
-    this.RE_FULL_URL = this.RE_URL_SCHEME+'\\w+(?:.\\w+)'+this.RE_URL_ENDING;
-    this.RE_OTHER_URL = '\\w[\\w_-]*(?:\\.\\w[\\w_-]*)*\\.'+this.RE_TLD+'(?:[\\/\\?#]'+this.RE_URL_ENDING+')?';
-  },
-
   /**
    * Linkify a string, replacing text urls with <a href="url">url</a>
    * Note: init must be called before this function can be used
@@ -47,11 +65,8 @@ linkify = {
    * @param matched_links - Return param (pass by ref) - Array of links matched during linkification
    **/
   linkify: function(text, matched_links) {
-    this.init();
-
     text = this.match_and_replace(this.RE_EMAIL_PATTERN, text, true, false, matched_links);
-    text = this.match_and_replace(this.RE_FULL_URL, text, false, false, matched_links);
-    text = this.match_and_replace(this.RE_OTHER_URL, text, false, true, matched_links);
+    text = this.match_and_replace(this.RE_URL, text, false, true, matched_links);
 
     return text;
   },
@@ -101,7 +116,7 @@ linkify = {
       var address = input.substr(start, match_length);
       var actual = address;
 
-      if (add_http) {
+      if (add_http && !match[2]) {
         actual = 'http://'+actual;
       }
 
