@@ -1,6 +1,7 @@
 linkify = {
   // Static values used in creating the URL regexes
   RE_EMAIL_PATTERN: "[a-z0-9!#$%&'*+/=?^_`{|}~\\-]+(?:[.][a-z0-9!#$%&'*+/=?^_`{|}~\\-]+)*@(?:[a-z0-9](?:[a-z0-9\\-]*[a-z0-9])?[.])+[a-z0-9](?:[a-z0-9\\-]*[a-z0-9])?",
+  // adapted from: http://daringfireball.net/2010/07/improved_regex_for_matching_urls
   RE_URL: 
     '\\b' +
     '(' +
@@ -80,7 +81,7 @@ linkify = {
     var match_length = 0;
     var end_tag_pos = 0;
     var close_anchor_re = /<\/[aA]>/;
-    var re = new RegExp(pattern, "g");
+    var re = new RegExp(pattern, "gi");
 
     var match = {};
     var max_iter = 20;
