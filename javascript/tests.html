@@ -98,6 +98,9 @@
         'http://example.com?foo=bar%22baz': ['http://example.com?foo=bar%22baz'],
         'http://example.com???foo=bar%22baz': ['http://example.com???foo=bar%22baz'],
 
+        // colons
+        'http://example.com?foo=bar:baz': ['http://example.com?foo=bar:baz'],
+
         // parens in url
         'http://foo.com/x_(wikipedia)': ['http://foo.com/x_(wikipedia)'],
         'http://foo.com/x_(wikipedia)_x': ['http://foo.com/x_(wikipedia)_x'],

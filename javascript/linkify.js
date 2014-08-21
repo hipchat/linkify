@@ -21,7 +21,7 @@ linkify = {
         '|' +
         '(?::\\d+)' + // :port, insert no colons allowed joke here
         '|' +
-        '[a-z0-9\\-._~/?#[\\]@!$&\'*+,;=]' +  // allowable chars per http://tools.ietf.org/html/rfc3986#section-2
+        '[a-z0-9\\-._~/?#[\\]@!$&\'*+,;:=]' +  // allowable chars per http://tools.ietf.org/html/rfc3986#section-2
         '|' +
         '(?:\\([^\\s\\()]*?\\([^\\s\\()]+\\)[^\\s\\()]*?\\))' + // balanced parens, one level deep: (…(…)…)
         '|' + 
